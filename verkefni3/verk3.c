@@ -71,30 +71,26 @@ void drive() {
 			motor[leftMotor]  = 70;
 
 		}
-
-
 	}
-};
+}
 bool turn_array[14]= {0,1,1,0,0,1,1,0,0,1,1,0,1,1};
 task one(){
-		for(int i=0;i<14;i++){
-					reset_encode();
-					drive();
-					reset_encode();
-					stop_motor(500);
-					robot_turn(turn_array[i], 90);
-				}
-	}
-task two(){
-		while(1 == 1)
-  {
-    motor[leftMotor]  = vexRT[Ch3];   // Left Joystick Y value
-    motor[rightMotor] = vexRT[Ch2];   // Right Joystick Y value
 
-  }
+		int i = 0;
+		while(i< 14){
+			reset_encode();
+			drive();
+			reset_encode();
+			stop_motor(500);
+			robot_turn(turn_array[i], 90);
+			i++;
+		}
 }
-task three(){
+
+task two(){
 	while(1==1){
+			motor[leftMotor]  = vexRT[Ch3];   // Left Joystick Y value
+    	motor[rightMotor] = vexRT[Ch2];   // Right Joystick Y value
 		 if(vexRT[Btn6U] == 1)
 	    {
 	      motor[arMMotor] = 40;
@@ -125,21 +121,9 @@ task three(){
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
 task main()
 {
+	StartTask(one);
+	while (1==1){
 
-		StartTask(three);
-		while (!vexRT[Btn7D]){
-					StartTask(one);
-					if (vexRT[Btn7D] == 1){
-				 	  stopTask(one);
-				 	  while(1 == 1){
-				 	  	StartTask(two);
-				 		}
-				 	}
-
-}
-
-
-
-
+	};
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
