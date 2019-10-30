@@ -33,47 +33,48 @@
 |*    Analog - Port 2     lineFollowerCENTER  VEX Light Sensor      Front-center, facing down         *|
 |*    Analog - Port 3     lineFollowerLEFT    VEX Light Sensor      Front-left, facing down           *|
 \*-----------------------------------------------------------------------------------------------4246-*/
+void stop_motor(){
+	motor[leftMotor] = 0;
+	motor[rightMotor] = 0;
 
+};
 
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
 task main()
 {
-           // The program waits for 2000 milliseconds before continuing.
 
-  int threshold = 203;      /* found by taking a reading on both DARK and LIGHT    */
+  int threshold = 1750;      /* found by taking a reading on both DARK and LIGHT    */
                             /* surfaces, adding them together, then dividing by 2. */
   while(true)
   {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -+
-    displayLCDCenteredString(0, "LEFT  CNTR  RGHT");        //  Display   |
-    displayLCDPos(1,0);                                     //  Sensor    |
-    displayNextLCDNumber(SensorValue(lineFollowerLEFT));    //  Readings  |
-    displayLCDPos(1,6);                                     //  to LCD.   |
-    displayNextLCDNumber(SensorValue(lineFollowerCENTER));  //            |
-    displayLCDPos(1,12);                                    //  L  C  R   |
-    displayNextLCDNumber(SensorValue(lineFollowerRIGHT));   //  x  x  x   |
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -+
 
     // RIGHT sensor sees dark:
-    if(SensorValue(lineFollowerRIGHT) > threshold)
-    {
-      // counter-steer right:
-      motor[leftMotor]  = 40;
-      motor[rightMotor] = 0;
-    }
-    // CENTER sensor sees dark:
-    if(SensorValue(lineFollowerCENTER) > threshold)
+  	if(SensorValue(lineFollowerCENTER) < threshold)
     {
       // go straight
       motor[leftMotor]  = 40;
       motor[rightMotor] = 40;
+
     }
-    // LEFT sensor sees dark:
-    if(SensorValue(lineFollowerLEFT) > threshold)
+
+    else if(SensorValue(lineFollowerRIGHT) < threshold)
     {
-      // counter-steer left:
+      // counter-steer right:
       motor[leftMotor]  = 0;
       motor[rightMotor] = 40;
+
+    }
+
+    // LEFT sensor sees dark:
+    else if(SensorValue(lineFollowerLEFT) < threshold)
+    {
+      // counter-steer left:
+      motor[leftMotor]  = 40;
+      motor[rightMotor] = 0;
+
+    }
+    else{
+    	stop_motor();
     }
   }
 }
