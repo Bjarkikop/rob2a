@@ -44,7 +44,7 @@ void stop_motor(){
 task main()
 {
 
-  int threshold = 1750;      /* found by taking a reading on both DARK and LIGHT    */
+  int threshold = 1600;      /* found by taking a reading on both DARK and LIGHT    */
                             
   while(true)
   {
