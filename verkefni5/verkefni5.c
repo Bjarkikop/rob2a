@@ -1,10 +1,10 @@
-#pragma config(Sensor, in1,    lineFollowerRIGHT,   sensorLineFollower)
+#pragma config(Sensor, in1,    lineFollowerLEFT,   sensorLineFollower)
 #pragma config(Sensor, in2,    lineFollowerCENTER,  sensorLineFollower)
-#pragma config(Sensor, in3,    lineFollowerLEFT,    sensorLineFollower)
+#pragma config(Sensor, in3,    lineFollowerRIGHT,    sensorLineFollower)
 #pragma config(Sensor, dgtl2,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl4,  rightEncoder,   sensorQuadEncoder)
-#pragma config(Sensor, dgtl6,  touchSensor,    sensorTouch)
-#pragma config(Sensor, dgtl8,  sonarSensor,    sensorSONAR_cm)
+#pragma config(Sensor, dgtl8,  touchSensor,    sensorTouch)
+#pragma config(Sensor, in5,  sonarSensor,    sensorSONAR_cm)
 #pragma config(Motor,  port6,           leftMotor,     tmotorServoContinuousRotation, openLoop, reversed)
 #pragma config(Motor,  port7,           rightMotor,    tmotorServoContinuousRotation, openLoop)
 #pragma config(Motor,  port4,           arMMotor,      tmotorNormal, openLoop)
@@ -44,34 +44,34 @@ void stop_motor(){
 task main()
 {
 
-  int threshold = 1600;      /* found by taking a reading on both DARK and LIGHT    */
-                            
-  while(true)
+  int threshold = 1800;      /* found by taking a reading on both DARK and LIGHT    */
+
+  while((SensorValue(touchSensor) != 1) && (vexRT[Btn8R] != 1))
   {
 
     // RIGHT sensor sees dark:
-  	if(SensorValue(lineFollowerCENTER) < threshold)
+  	if(SensorValue(lineFollowerCENTER) > threshold)
     {
       // go straight
-      motor[leftMotor]  = 50;
-      motor[rightMotor] = 50;
+      motor[leftMotor]  = 40;
+      motor[rightMotor] = 40;
 
     }
 
-    else if(SensorValue(lineFollowerRIGHT) < threshold)
+    else if(SensorValue(lineFollowerRIGHT) > threshold)
     {
       // counter-steer right:
-      motor[leftMotor]  = 0;
-      motor[rightMotor] = 50;
+      motor[leftMotor]  = 40;
+      motor[rightMotor] = 0;
 
     }
 
     // LEFT sensor sees dark:
-    else if(SensorValue(lineFollowerLEFT) < threshold)
+    else if(SensorValue(lineFollowerLEFT) > threshold)
     {
       // counter-steer left:
-      motor[leftMotor]  = 50;
-      motor[rightMotor] = 0;
+      motor[leftMotor]  = 0;
+      motor[rightMotor] = 40;
 
     }
     else{
