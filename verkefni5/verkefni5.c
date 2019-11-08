@@ -34,9 +34,37 @@
 |*    Analog - Port 2     lineFollowerCENTER  VEX Light Sensor      Front-center, facing down         *|
 |*    Analog - Port 3     lineFollowerLEFT    VEX Light Sensor      Front-left, facing down           *|
 \*-----------------------------------------------------------------------------------------------4246-*/
+#define TURN 3.1
+#define BASEDIST 286.5
+
+void reset_encode(){
+	SensorValue[rightEncoder]=0;
+	SensorValue[leftEncoder]=0;
+};
 void stop_motor(){
 	motor[leftMotor] = 0;
 	motor[rightMotor] = 0;
+
+};
+void robot_turn(bool l_r,int deg){
+	if(l_r){
+		while(TURN *deg > abs(SensorValue[rightEncoder])){
+			motor[leftMotor] = -40;
+			motor[rightMotor] = 40;
+			if (TURN *deg < abs(SensorValue[rightEncoder])){
+				stop_motor();
+			}
+		}
+	}
+	else if(l_r == false){
+		while(TURN *deg > abs(SensorValue[leftEncoder])){
+			motor[leftMotor] = 40;
+			motor[rightMotor] = -40;
+			if (TURN *deg < abs(SensorValue[leftEncoder])){
+				stop_motor();
+			}
+		}
+	}
 
 };
 
@@ -75,7 +103,8 @@ task main()
 
     }
     else{
-    	stop_motor();
+    	robot_turn(1, 90);
+    	reset_encode();
     }
   }
 }
