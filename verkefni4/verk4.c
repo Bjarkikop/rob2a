@@ -51,32 +51,7 @@ void drive(){
 	motor[leftMotor] = 80;
 	motor[rightMotor] = 80;
 };
-/*
-void light_drive(){
-	while(1==1){
-		while(SensorValue(sonarSensor) > 10  || SensorValue(sonarSensor) == -1){
-			reset_lightSensor();
-			if (SensorValue(lightSensor) > 250){ // While the ambient lightSensor reads a value greater than 200
-				stop_motor();
-			// Do nothing
-			}
-			else if (SensorValue(lightSensor) < 250){
-				motor[rightMotor] = 63;			          // Motor on port2 is run at half (63) power forward
-				motor[leftMotor]  = 63;
 
-			}
-		while (SensorValue(sonarSensor) < 10){
-			wait1Msec(1000);
-			motor[rightMotor] = -63;			          // Motor on port2 is run at half (63) power forward
-			motor[leftMotor]  = -63;
-			wait1Msec(1000);
-			stop_motor();
-			robot_turn();
-			}
-		}
-	}
-}
-*/
 task main(){
 	while(1==1){
 		while(SensorValue(lightSensor) < 300){
